@@ -611,7 +611,34 @@ def pre_start_checks(
 
     try:
         client = create_client(ctx, opts)
-        mor = client.get_managed_object(opts.device, opts.external_type)
+
+        mor = None
+
+        if is_id_like(opts.device):
+            try:
+                logging.info(
+                    "Checking if given value is a managed object id. value=%s",
+                    opts.device,
+                )
+                mor = client.get_managed_object_by_id(opts.device)
+                logging.info(
+                    "Found device via managed object id. value=%s", opts.device
+                )
+            except Exception as ex:
+                # info message as the external lookup will also be tried
+                # in case if the external id just looks like an managed object id
+                logging.info(
+                    "Given device value is not a managed object id. value=%s, reason=%s",
+                    opts.device,
+                    ex,
+                )
+
+        # Lookup mo if not already set (e.g. any previous attempts failed)
+        if not mor:
+            mor = client.get_managed_object_by_external_id(
+                opts.device, opts.external_type
+            )
+
         config_id = get_config_id(ctx, mor, opts.config)
         device_id = mor.get("id")
 
@@ -778,3 +805,8 @@ def start_proxy(
             ctx.exit(exit_code)
         else:
             opts.show_info("Exiting")
+
+
+def is_id_like(value: str) -> bool:
+    """Check if a value is likely to be an internal id"""
+    return value.isnumeric()

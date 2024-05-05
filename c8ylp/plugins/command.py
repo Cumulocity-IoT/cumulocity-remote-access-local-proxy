@@ -43,7 +43,7 @@ def cli(ctx: click.Context, additional_args: List[str], **kwargs):
     Start once-off proxy and execute a (local) script/command
 
         \b
-        DEVICE is the device's external identity
+        DEVICE is the device's external identity or managed object id
         REMOTE_COMMANDS is the script or command to run after the proxy has been started
 
         All additional arguments will be passed to the script/command. Use "--" before

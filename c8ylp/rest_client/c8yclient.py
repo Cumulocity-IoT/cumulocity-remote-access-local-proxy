@@ -68,6 +68,16 @@ class CumulocityDeviceNotFound(Exception):
         super().__init__(message)
 
 
+class CumulocityDeviceIDNotFound(Exception):
+    """Cumulocity device managed object id not found error"""
+
+    def __init__(self, device: str, host: str) -> None:
+        message = (
+            f"A device with the id '{device}' was not found in Cumulocity host: {host}"
+        )
+        super().__init__(message)
+
+
 class BearerAuth(requests.auth.AuthBase):
     """Bearer/token based authorization"""
 
@@ -341,8 +351,41 @@ class CumulocityClient:
         self.logger.error(error)
         raise error
 
-    def get_managed_object(
-        self, serial_number: str, identity_type: str = "c8y_Serial"
+    def get_managed_object_by_id(self, mo_id: str):
+        """Get a managed object by looking it up via its external identity
+
+        Args:
+            mo_id (str): Managed object id
+
+        Raises:
+            CumulocityPermissionDeviceError: Error when the user does not have the correct permissions
+                to access the API or device
+            CumulocityDeviceIDNotFound: If the managed object id is not found
+            Exception: Unexpected error
+
+        Returns:
+            Dict[str, Any]: Device managed object
+        """
+        response = self.session.get(f"/inventory/managedObjects/{mo_id}")
+        if response.status_code == 200:
+            return json.loads(response.content.decode("utf-8"))
+
+        error = Exception(
+            f"Error retrieving device. Status Code {response.status_code}, "
+            f"device (id)={mo_id}, host={self.url}, user={self.user}"
+        )
+        if response.status_code == 401:
+            error = CumulocityPermissionDeviceError(self.user, mo_id, self.url)
+        elif response.status_code == 404:
+            error = CumulocityDeviceIDNotFound(mo_id, self.url)
+
+        self.logger.error(error)
+        raise error
+
+    def get_managed_object_by_external_id(
+        self,
+        serial_number: str,
+        identity_type: str = "c8y_Serial",
     ) -> Dict[str, Any]:
         """Get a managed object by looking it up via its external identity
 

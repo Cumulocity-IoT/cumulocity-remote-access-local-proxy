@@ -55,7 +55,7 @@ def cli(ctx: click.Context, ssh_user: str, additional_args: List[str], **kwargs)
     from being interpreted by c8ylp (i.e. to avoid clashes with c8ylp).
 
     \b
-        DEVICE is the device's external identity
+        DEVICE is the device's external identity or managed object id
 
     Example 1: Start an interactive SSH connection
 

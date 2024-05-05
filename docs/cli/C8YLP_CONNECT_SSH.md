@@ -13,7 +13,7 @@ Usage: c8ylp connect ssh [OPTIONS] DEVICE [REMOTE_COMMANDS]...
   Use "--" before the remote commands to prevent the arguments from being
   interpreted by c8ylp (i.e. to avoid clashes with c8ylp).
 
-      DEVICE is the device's external identity
+      DEVICE is the device's external identity or managed object id
 
   Example 1: Start an interactive SSH connection
 
