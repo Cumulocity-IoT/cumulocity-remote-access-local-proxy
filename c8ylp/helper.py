@@ -122,7 +122,7 @@ def cli_wait(ctx: click.Context, port, timeout, silent):
         wait_for_port(port, timeout, silent)
     except TimeoutError:
         if not silent:
-            click.secho(f"Port is not open after {timeout}s", fg="red")
+            click.secho(f"Port is not open after {timeout}s", fg="red", err=True)
         ctx.exit(1)
 
 

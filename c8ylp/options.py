@@ -96,11 +96,11 @@ def validate_token(ctx: click.Context, _param, value) -> Any:
 
     try:
         client.validate_credentials()
-        click.secho("Validating c8y token: ", nl=False)
-        click.secho("OK", fg="green")
+        click.secho("Validating c8y token: ", nl=False, err=True)
+        click.secho("OK", fg="green", err=True)
     except Exception:
-        click.secho("Validating c8y token: ", nl=False)
-        click.secho("EXPIRED/INVALID", fg="red")
+        click.secho("Validating c8y token: ", nl=False, err=True)
+        click.secho("EXPIRED/INVALID", fg="red", err=True)
         logging.info(
             "Token is no longer valid for host. The token will be ignored. host=%s",
             host,

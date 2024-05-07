@@ -184,12 +184,12 @@ class ProxyContext:
 
     @classmethod
     def show_message(cls, msg: str, *args, **kwargs):
-        """Show an message to the user and log it
+        """Show an message to the user (on stderr) and log it
 
         Args:
             msg (str): User message to print on the console
         """
-        click.secho(msg, fg="green")
+        click.secho(msg, fg="green", err=True)
         logging.info(msg, *args, **kwargs)
 
     def show_error(self, msg: str, *args, **kwargs):
@@ -204,13 +204,13 @@ class ProxyContext:
         logging.warning(msg, *args, **kwargs)
 
     def show_info(self, msg: str, *args, **kwargs):
-        """Show an info message to the user and log it
+        """Show an info message to the user (on stderr) and log it
 
         Args:
             msg (str): User message to print on the console
         """
         if not self.verbose:
-            click.secho(msg)
+            click.secho(msg, err=True)
 
         logging.warning(msg, *args, **kwargs)
 
@@ -574,7 +574,11 @@ def run_proxy_in_background(
     opts.set_env()
 
     # The subcommand is called after this
-    timer = CommandTimer("Duration", on_exit=click.echo).start()
+    def display(*args, **kwargs):
+        kwargs["err"] = True
+        click.echo(*args, **kwargs)
+
+    timer = CommandTimer("Duration", on_exit=display).start()
 
     # Shutdown the server once the plugin has been run
     @ctx.call_on_close
@@ -701,7 +705,7 @@ def start_proxy(
                 opts.tcp_timeout,
             )
 
-        click.secho(BANNER1)
+        click.secho(BANNER1, err=True)
         logging.info("Starting socket server")
 
         background = threading.Thread(target=socket_server.serve_forever, daemon=True)
