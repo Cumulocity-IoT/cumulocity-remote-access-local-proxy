@@ -93,6 +93,21 @@ class TCPHandler(socketserver.BaseRequestHandler):
             except ConnectionResetError as ex:
                 logging.info("Connection was reset. %s", ex)
                 break
+            except (OSError, socket.error) as ex:
+                # Note: A lot of unexpected errors are raised if the server stops the connection
+                # Don't raise an exception as this is normal behaviour
+                try:
+                    logging.info(
+                        "Socket error, stopping handler (this is normal if the server stops the socket). %s",
+                        ex,
+                    )
+                    self.server.web_socket_client.proxy_send_message = None
+                    self.server.web_socket_client.stop()
+                except Exception as stop_ex:
+                    logging.info(
+                        "Unexpected error whilst stopping handler. %s", stop_ex
+                    )
+                break
 
 
 class CustomTCPServer(socketserver.TCPServer):
