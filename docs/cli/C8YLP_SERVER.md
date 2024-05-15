@@ -6,7 +6,7 @@ Usage: c8ylp server [OPTIONS] DEVICE
 
   Start local proxy in server mode
 
-      DEVICE is the device's external identity
+      DEVICE is the device's external identity or managed object id
 
   Once the local proxy has started, clients such as ssh and scp can be used to
   establish a connection to the device.
