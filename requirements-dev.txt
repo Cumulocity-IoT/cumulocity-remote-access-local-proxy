@@ -10,7 +10,7 @@ licenseheaders==0.8.8
 pytest==8.2.0
 pytest-timeout==2.3.1
 pytest-cov==5.0.0
-responses==0.25.0
+responses==0.25.3
 
 # publishing
 wheel>=0.34.2
