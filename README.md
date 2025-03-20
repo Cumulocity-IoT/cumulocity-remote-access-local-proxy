@@ -1,3 +1,9 @@
+# Deprecation Notice
+
+This tool is not further developed, as it was fully replaced by a successor: [go-c8y-cli](https://goc8ycli.netlify.app/)
+
+Check out the migration guide to migrate to go-c8y-cli: [Migration Guide](https://goc8ycli.netlify.app/docs/examples/remoteaccess/#migrating-from-c8ylp)
+
 # Local Proxy for Cumulocity Cloud Remote Access
 
 This is a proxy implementation for the Cloud Remote Access feature of Cumulocity which allows to connect to devices using native TCP-based clients like ssh, vnc, rdp etc.
@@ -12,12 +18,12 @@ The proxy is written in Python3.
 
 > ### Migration Notes
 >
-> If your are upgrade from 1.x please see the [MIGRATION to V2 NOTES](docs/MIGRATION_V2.md) as there are some breaking changes. Please forgive us, but you can be sure it is worth it! Version 2.x brings a lot of great features like interactive ssh sessions and plugins to make c8ylp even more useful!
+> If you are upgrade from 1.x please see the [MIGRATION to V2 NOTES](docs/MIGRATION_V2.md) as there are some breaking changes. Please forgive us, but you can be sure it is worth it! Version 2.x brings a lot of great features like interactive ssh sessions and plugins to make c8ylp even more useful!
 >
 
 The Local Proxy can be installed via pip, or manually installed from the repository by cloning it.
 
-Additionally a Debian package (.deb) can be created by building the project yourself and hosting the package in your own Debian repository. See the [DEVELOPER notes](docs/DEVELOPER.md) for details.
+Additionally, a Debian package (.deb) can be created by building the project yourself and hosting the package in your own Debian repository. See the [DEVELOPER notes](docs/DEVELOPER.md) for details.
 
 
 ## Installation via pip (hosted in pypi)
